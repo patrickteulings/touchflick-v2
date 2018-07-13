@@ -26,8 +26,13 @@
 
 .touchflick__item {
   width: 100%;
-  flex: 0 0 auto; }
+  height: 50vw;
+  flex: 0 0 auto;
+  background: #a1a1a1;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
   .touchflick__item:nth-child(2n+1) {
-    background: #ff9900; }
+    background: #e1e1e1; }
 
 /*# sourceMappingURL=app.css.map*/
