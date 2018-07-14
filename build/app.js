@@ -124,12 +124,17 @@ class TouchFlick {
     this.currentX = 0;
     this.distanceX = 0;
     this.nrSlides = this.el.querySelectorAll('.touchflick__item').length;
+    this.thumbs = this.el.querySelectorAll('.js-touch-thumb__item');
+
     this.wrapper.style.transform = 'translateX(0px)';
     this.animationFrame = 0;
     this.config = {
       buttonPrev: this.el.querySelector('.js-prev'),
-      buttonNext: this.el.querySelector('.js-next')
+      buttonNext: this.el.querySelector('.js-next'),
+      activeClass: 'is-active',
+      disabledClass: 'is-disabled'
     };
+    this.setNavigation();
     this.addEvents();
   }
 
@@ -155,6 +160,12 @@ class TouchFlick {
       this.index += 1;
       this.onIndexClick();
     });
+
+    for (let thumb of this.thumbs) {
+      thumb.addEventListener('click', e => {
+        this.onThumbClick(e);
+      });
+    }
   }
 
   // Calculate the current position the slider contents have
@@ -176,18 +187,16 @@ class TouchFlick {
 
   onPanEnd(ev) {
     this.isPanning = false;
-    if (ev.deltaX > 0) {
+    let percentage = ev.deltaX / this.wrapper.clientWidth * 100;
+
+    if (percentage > 25 && ev.deltaX > 0) {
       this.index = this.index === 0 ? 0 : this.index - 1;
     }
-    if (ev.deltaX < 0) {
+    if (percentage < -25 && ev.deltaX < 0) {
       this.index = this.index === this.nrSlides - 1 ? this.nrSlides - 1 : this.index + 1;
     }
     this.animate();
-  }
-
-  scrollTo() {
-    let destX = this.index * 100;
-    // this.wrapper.style.transform = `translateX(-${this.index * 100}%)`;
+    this.setNavigation();
   }
 
   animate() {
@@ -198,7 +207,6 @@ class TouchFlick {
     if (Math.abs(this.distanceX) < 0.2) {
       this.animationFrame = null;
       this.wrapper.style.transform = `translateX(-${this.index * 100}%)`;
-      let transformStyle = this.wrapper.style.transform;
     } else {
       this.animationFrame = window.requestAnimationFrame(() => {
         this.animate();
@@ -213,6 +221,37 @@ class TouchFlick {
     this.index = this.index <= 0 ? 0 : this.index - 1;
     this.index = this.index >= this.nrSlides - 1 ? this.nrSlides - 1 : this.index + 1;
     this.animate();
+    this.setNavigation();
+  }
+
+  onThumbClick(e) {
+    for (let [index, thumb] of this.thumbs.entries()) {
+      if (thumb === e.target) {
+        this.index = index;
+        //thumb.style.opacity = "0.2";    
+      } else {
+          //thumb.style.opacity = "1";    
+        }
+    }
+    this.animate();
+    this.setNavigation();
+  }
+
+  setNavigation() {
+    // set active thumb
+    if (this.thumbs) {
+      for (let [index, thumb] of this.thumbs.entries()) {
+        if (this.index === index) {
+          thumb.classList.add(this.config.activeClass);
+        } else {
+          thumb.classList.remove(this.config.activeClass);
+        }
+      }
+    }
+
+    // set active prev/next
+    this.index === 0 ? this.config.buttonPrev.classList.add(this.config.disabledClass) : this.config.buttonPrev.classList.remove(this.config.disabledClass);
+    this.index === this.nrSlides - 1 ? this.config.buttonNext.classList.add(this.config.disabledClass) : this.config.buttonNext.classList.remove(this.config.disabledClass);
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = TouchFlick;

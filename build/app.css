@@ -35,4 +35,15 @@
   .touchflick__item:nth-child(2n+1) {
     background: #e1e1e1; }
 
+.touchflick-thumbs__item {
+  transition: all 0.2s ease-out; }
+  .touchflick-thumbs__item.is-active {
+    opacity: 0.2; }
+
+.touchflick-buttons__item {
+  cursor: pointer; }
+  .touchflick-buttons__item.is-disabled {
+    opacity: 0.2;
+    pointer-events: none; }
+
 /*# sourceMappingURL=app.css.map*/

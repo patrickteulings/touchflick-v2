@@ -23,4 +23,23 @@
       background: #e1e1e1;
     }
   }
-} 
+}
+
+.touchflick-thumbs{
+  &__item {
+    transition: all 0.2s ease-out;
+    &.is-active {
+      opacity: 0.2;
+    }
+  }
+}
+
+.touchflick-buttons {
+  &__item{
+    cursor: pointer;
+    &.is-disabled{
+      opacity: 0.2;
+      pointer-events: none;
+    }
+  }
+}
