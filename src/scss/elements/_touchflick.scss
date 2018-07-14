@@ -2,6 +2,7 @@
   &--wrap {
     width: 80%;
     overflow-x: hidden;
+    position: relative;
   }
   &__inner {
     width: 100%;
@@ -26,10 +27,21 @@
 }
 
 .touchflick-thumbs{
+  display: flex;
+  width: 100%;
+  position: absolute;
+  bottom: 60px;  
+  align-items: center;
+  justify-content: center;
+
   &__item {
     transition: all 0.2s ease-out;
+    flex: 0 1 auto;
+    margin: 0 1em;
+    cursor: pointer;
     &.is-active {
       opacity: 0.2;
+      pointer-events: none;
     }
   }
 }
