@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <div class="touchflick touchflick--wrap js-hammer" data-module="touchFlick" data-config='{"treshold":"40"}'>
+  <div class="touchflick touchflick--wrap js-hammer" data-module="touchFlick" data-config='{"threshold": 20, "activeClass":"is-active","disabledClass":"is-disabled", "thumbItem":".touchflick-thumbs__item", "buttonPrev":".touchflick-buttons__item--prev","buttonNext":".touchflick-buttons__item--next"}'>
 
     <div class="touchflick__static">
       <!-- ADD STATIC CONTENT HERE (EG, content that wont swipe -->
@@ -58,19 +58,19 @@
       </div>
     </div>
 
-    <div class="touchflick-thumbs js-touch-thumbs">
-      <div class="touchflick-thumbs__item js-touch-thumb__item">0</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">1</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">2</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">3</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">4</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">5</div>
-      <div class="touchflick-thumbs__item js-touch-thumb__item">6</div>
+    <div class="touchflick-thumbs">
+      <div class="touchflick-thumbs__item">0</div>
+      <div class="touchflick-thumbs__item">1</div>
+      <div class="touchflick-thumbs__item">2</div>
+      <div class="touchflick-thumbs__item">3</div>
+      <div class="touchflick-thumbs__item">4</div>
+      <div class="touchflick-thumbs__item">5</div>
+      <div class="touchflick-thumbs__item">6</div>
     </div>
     <div class="touchflick-buttons" id="carouselPrevNext">
       <div class="prevNextWrapper">
-        <div id="prev" class="touchflick-buttons__item js-prev">prev</div>
-        <div id="next" class="touchflick-buttons__item js-next">next</div>
+        <div id="prev" class="touchflick-buttons__item touchflick-buttons__item--prev">prev</div>
+        <div id="next" class="touchflick-buttons__item touchflick-buttons__item--next">next</div>
       </div>
     </div>    
   </div>

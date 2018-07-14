@@ -11,17 +11,26 @@ export default class TouchFlick {
     this.distanceX = 0;
     this.currentX = 0;
     this.distanceX = 0;
-    this.nrSlides = this.el.querySelectorAll('.touchflick__item').length;
-    this.thumbs = this.el.querySelectorAll('.js-touch-thumb__item')
+
+    this.config = {
+      thumbItem: '.touchflick-thumbs__item',
+      buttonPrev: '.touchflick-buttons__item--prev',
+      buttonNext: '.touchflick-buttons__item--next',
+      activeClass: 'is-active',
+      disabledClass: 'is-disabled',
+      threshold: 25
+    }
     
+    Object.assign(this.config, JSON.parse(this.el.dataset.config));
+    console.log(this.config);
+    this.nrSlides = this.el.querySelectorAll('.touchflick__item').length;
+    this.thumbs = this.el.querySelectorAll(this.config.thumbItem);
+    
+    this.buttonPrev = this.el.querySelector(this.config.buttonPrev);    
+    this.buttonNext = this.el.querySelector(this.config.buttonNext);
     this.wrapper.style.transform = 'translateX(0px)';
     this.animationFrame = 0;
-    this.config = {
-      buttonPrev: this.el.querySelector('.js-prev'),
-      buttonNext: this.el.querySelector('.js-next'),
-      activeClass: 'is-active',
-      disabledClass: 'is-disabled'
-    }
+    
     this.setNavigation();
     this.addEvents();
   }
@@ -39,20 +48,26 @@ export default class TouchFlick {
       this.onPanEnd(ev);
     });
 
-    this.config.buttonPrev.addEventListener('click', () => {
-      this.index -= 1;
-      this.onIndexClick();
-    });
+    if(this.buttonPrev !== null){
+      this.buttonPrev.addEventListener('click', () => {
+        this.index -= 1;
+        this.onIndexClick();
+      });
+    }
 
-    this.config.buttonNext.addEventListener('click', () => {
-      this.index += 1;
-      this.onIndexClick();
-    });
+    if(this.buttonNext !== null){
+      this.buttonNext.addEventListener('click', () => {
+        this.index += 1;
+        this.onIndexClick();
+      });
+    }
     
-    for(let thumb of this.thumbs){      
-      thumb.addEventListener('click', (e) => {
-        this.onThumbClick(e);
-      })
+    if(this.thumbs !== null){
+      for(let thumb of this.thumbs){      
+        thumb.addEventListener('click', (e) => {
+          this.onThumbClick(e);
+        })
+      }
     }
   }
 
@@ -66,6 +81,7 @@ export default class TouchFlick {
     this.isPanning = true;
   }
 
+  // Body moving!
   onPan (ev) {
     let percentage = (ev.deltaX / this.wrapper.clientWidth) * 100;
     let position = Number(this.start) + Number(percentage);
@@ -73,20 +89,23 @@ export default class TouchFlick {
     this.currentX = position;
   }
 
+  // And release, now scroll!
   onPanEnd (ev) {
     this.isPanning = false;
     let percentage = (ev.deltaX / this.wrapper.clientWidth) * 100;
 
-    if (percentage > 25 && ev.deltaX > 0) {      
+    if (percentage > this.config.threshold && ev.deltaX > 0) {      
       this.index = (this.index === 0) ? 0 : this.index - 1;
     }
-    if (percentage < -25 && ev.deltaX < 0) {
+    if (percentage < -(this.config.threshold) && ev.deltaX < 0) {
       this.index = (this.index === this.nrSlides - 1) ? (this.nrSlides - 1) : this.index + 1;
     }
+
     this.animate();
     this.setNavigation();
   }
 
+  // Our requestAnimationFrame function
   animate () {
     this.distanceX = (-(this.index * 100)) - (this.currentX);
 
@@ -103,6 +122,7 @@ export default class TouchFlick {
     }
   }
 
+  // Scroll to a new index
   onIndexClick (_index) {
     this.index = (this.index <= 0) ? 0 : this.index - 1;
     this.index = (this.index >= this.nrSlides - 1) ? (this.nrSlides - 1) : this.index + 1;
@@ -110,22 +130,18 @@ export default class TouchFlick {
     this.setNavigation();
   }
 
+  // Click on potential thumbs
   onThumbClick (e) {
     for(let [index, thumb] of this.thumbs.entries()){
-      if(thumb === e.target){
-        this.index = index;
-        //thumb.style.opacity = "0.2";    
-      }
-      else{
-        //thumb.style.opacity = "1";    
-      } 
+      if (thumb === e.target) this.index = index;
     }
+
     this.animate();
     this.setNavigation();
   }
 
-  setNavigation () {
-    // set active thumb
+  // Check possible active states
+  setNavigation () {    
     if(this.thumbs){
       for(let [index, thumb] of this.thumbs.entries()){
         if(this.index === index){          
@@ -138,8 +154,9 @@ export default class TouchFlick {
     }
 
     // set active prev/next
-    (this.index === 0) ? this.config.buttonPrev.classList.add(this.config.disabledClass) : this.config.buttonPrev.classList.remove(this.config.disabledClass);
-    (this.index === this.nrSlides - 1) ? this.config.buttonNext.classList.add(this.config.disabledClass) : this.config.buttonNext.classList.remove(this.config.disabledClass);
-    
+    if( this.buttonPrev && this.buttonNext){
+      (this.index === 0 && this.buttonPrev) ? this.buttonPrev.classList.add(this.config.disabledClass) : this.buttonPrev.classList.remove(this.config.disabledClass);
+      (this.index === this.nrSlides - 1 && this.buttonNext) ? this.buttonNext.classList.add(this.config.disabledClass) : this.buttonNext.classList.remove(this.config.disabledClass);
+    }  
   }
 }
