@@ -3,7 +3,9 @@
     width: 80%;
     overflow-x: hidden;
     position: relative;
-    cursor: -webkit-grab;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;   
   }
   &__inner {
     width: 100%;
