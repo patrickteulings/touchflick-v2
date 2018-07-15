@@ -123,8 +123,8 @@ export default class TouchFlick {
   }
 
   // Scroll to a new index
-  onIndexClick (_index) {
-    this.index = (this.index <= 0) ? 0 : this.index - 1;
+  onIndexClick (_index) {    
+    this.index = (this.index <= -1) ? 0 : this.index - 1;
     this.index = (this.index >= this.nrSlides - 1) ? (this.nrSlides - 1) : this.index + 1;
     this.animate();
     this.setNavigation();
@@ -155,7 +155,7 @@ export default class TouchFlick {
 
     // set active prev/next
     if( this.buttonPrev && this.buttonNext){
-      (this.index === 0 && this.buttonPrev) ? this.buttonPrev.classList.add(this.config.disabledClass) : this.buttonPrev.classList.remove(this.config.disabledClass);
+      (this.index <= 0 && this.buttonPrev) ? this.buttonPrev.classList.add(this.config.disabledClass) : this.buttonPrev.classList.remove(this.config.disabledClass);
       (this.index === this.nrSlides - 1 && this.buttonNext) ? this.buttonNext.classList.add(this.config.disabledClass) : this.buttonNext.classList.remove(this.config.disabledClass);
     }  
   }

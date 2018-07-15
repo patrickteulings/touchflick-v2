@@ -15,7 +15,8 @@
 .touchflick--wrap {
   width: 80%;
   overflow-x: hidden;
-  position: relative; }
+  position: relative;
+  cursor: -webkit-grab; }
 
 .touchflick__inner {
   width: 100%;
