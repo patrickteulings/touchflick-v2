@@ -2,9 +2,6 @@ import Hammer from 'hammerjs'
 
 export default class TouchFlick {
   constructor (_el) {
-    this.el = document.querySelector('.js-hammer');
-    this.wrapper = document.querySelector('.touchflick__inner--wrap');
-    this.mc = new Hammer(this.el);
     this.start = 0;
     this.isPanning = false;
     this.index = 0;
@@ -21,8 +18,11 @@ export default class TouchFlick {
       threshold: 25
     }
     
-    Object.assign(this.config, JSON.parse(this.el.dataset.config));
-    console.log(this.config);
+    Object.assign(this.config, JSON.parse(_el.dataset.config));
+    this.el = document.querySelector('.js-hammer');
+    this.wrapper = document.querySelector('.touchflick__inner--wrap');
+    this.mc = new Hammer(this.el);
+
     this.nrSlides = this.el.querySelectorAll('.touchflick__item').length;
     this.thumbs = this.el.querySelectorAll(this.config.thumbItem);
     
