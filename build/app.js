@@ -114,6 +114,7 @@ for (let touchFlick of touchFlicks) {
 
 class TouchFlick {
   constructor(_el) {
+    this.el = _el;
     this.start = 0;
     this.isPanning = false;
     this.index = 0;
@@ -127,15 +128,17 @@ class TouchFlick {
       buttonNext: '.touchflick-buttons__item--next',
       activeClass: 'is-active',
       disabledClass: 'is-disabled',
+      innerWrapClass: '.touchflick__inner--wrap',
+      itemClass: '.touchflick__item',
       threshold: 25
     };
 
     Object.assign(this.config, JSON.parse(_el.dataset.config));
-    this.el = document.querySelector('.js-hammer');
-    this.wrapper = document.querySelector('.touchflick__inner--wrap');
+
+    this.wrapper = document.querySelector(this.config.innerWrapClass);
     this.mc = new __WEBPACK_IMPORTED_MODULE_0_hammerjs___default.a(this.el);
 
-    this.nrSlides = this.el.querySelectorAll('.touchflick__item').length;
+    this.nrSlides = this.el.querySelectorAll(this.config.itemClass).length;
     this.thumbs = this.el.querySelectorAll(this.config.thumbItem);
 
     this.buttonPrev = this.el.querySelector(this.config.buttonPrev);
